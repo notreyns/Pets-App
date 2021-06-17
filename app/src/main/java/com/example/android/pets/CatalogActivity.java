@@ -51,8 +51,12 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
         mDbHelper = new PetDbHelper(this);
+        //displayDatabaseInfo();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
         displayDatabaseInfo();
-
     }
 
     /**
@@ -65,7 +69,9 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PetContract.PetEntry.TABLE_NAME, null);
+        String selection= PetContract.PetEntry.COL_PET_WEIGHT +"=?";
+        //String selectionArgs= String[](String.valueOf());
+        Cursor cursor= db.query(PetContract.PetEntry.TABLE_NAME, null, null, null, null, null, null);
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
@@ -91,7 +97,7 @@ public class CatalogActivity extends AppCompatActivity {
         ContentValues values =new ContentValues();
         values.put(PetContract.PetEntry.COL_PET_NAME, "Toto");
         values.put(PetContract.PetEntry.COL_PET_BREED, "Terrier");
-        values.put(PetContract.PetEntry.COL_PET_GENDER, 1);
+        values.put(PetContract.PetEntry.COL_PET_GENDER, PetContract.PetEntry.GENDER_MALE);
         values.put(PetContract.PetEntry.COL_PET_WEIGHT, 7);
         long newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
 
